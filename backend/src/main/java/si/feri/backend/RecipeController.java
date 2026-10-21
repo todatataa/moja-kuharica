@@ -4,9 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
-@RequestMapping("/api/recipes")
+@RequestMapping("/api/recipes") //osnovna adresa svih endpointa
 public class RecipeController {
 
     private final RecipeRepository repository;
@@ -15,20 +15,20 @@ public class RecipeController {
         this.repository = repository;
     }
 
-    // CREATE
+    // create
     @PostMapping
     public Recipe create(@RequestBody Recipe recipe) {
         recipe.setId(null);
         return repository.save(recipe);
     }
 
-    // READ - svi
+    // read sve
     @GetMapping
     public List<Recipe> getAll() {
         return repository.findAll();
     }
 
-    // READ - jedan
+    // read jedan
     @GetMapping("/{id}")
     public ResponseEntity<Recipe> getOne(@PathVariable Long id) {
         return repository.findById(id)
@@ -36,7 +36,7 @@ public class RecipeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // UPDATE
+    // update
     @PutMapping("/{id}")
     public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe updated) {
         return repository.findById(id)
@@ -51,7 +51,7 @@ public class RecipeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // DELETE
+    // delete
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         if (!repository.existsById(id)) {

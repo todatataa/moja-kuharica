@@ -2,10 +2,10 @@ package si.feri.backend;
 
 import jakarta.persistence.*;
 
-@Entity
+@Entity //klasa recipe je tabela u bazi
 public class Recipe {
 
-    @Id
+    @Id //primarni kljuc koji baza sama povecava
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
