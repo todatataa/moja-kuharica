@@ -92,3 +92,15 @@ button:focus-visible { outline: 2px solid var(--basil); outline-offset: 2px; }
 .detail p { margin: 0; white-space: pre-line; max-width: 60ch; }
 
 .empty { padding: 32px 0; color: var(--muted); }
+
+/* ---------- iskanje, razvrščanje, strani ---------- */
+.toolbar { display: flex; gap: 16px; margin: 12px 0 20px; }
+.search { flex: 1; margin-top: 0; }
+.sort {
+  padding: 8px 4px; border: 0; border-bottom: 1.5px solid var(--line);
+  background: transparent; color: var(--ink); font: inherit;
+}
+.sort:focus { outline: none; border-bottom-color: var(--basil); }
+.pager { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; color: var(--muted); font-size: 0.95rem; }
+.btn-text:disabled { color: #aab3ac; cursor: default; text-decoration: none; }
+@media (max-width: 520px) { .toolbar { flex-direction: column; gap: 4px; } }

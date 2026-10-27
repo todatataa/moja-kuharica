@@ -2,6 +2,16 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 const API = "http://localhost:8080/api/recipes";
+const PAGE_SIZE = 5;
+
+const SORT_OPTIONS = [
+  { value: "id,desc", label: "Najnovejši" },
+  { value: "id,asc", label: "Najstarejši" },
+  { value: "title,asc", label: "Naslov A–Z" },
+  { value: "title,desc", label: "Naslov Z–A" },
+  { value: "preparationTimeMinutes,asc", label: "Najhitrejši" },
+  { value: "preparationTimeMinutes,desc", label: "Najdaljši čas" },
+];
 
 const emptyForm = {
   title: "",
@@ -13,6 +23,14 @@ const emptyForm = {
 
 export default function App() {
   const [recipes, setRecipes] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(0);
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("id,desc");
+  const [refresh, setRefresh] = useState(0);
+
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
   const [openId, setOpenId] = useState(null);
@@ -21,20 +39,46 @@ export default function App() {
   const [status, setStatus] = useState({ text: "", error: false });
 
   const say = (text, error = false) => setStatus({ text, error });
+  const reload = () => setRefresh((n) => n + 1);
 
-  const loadAll = async () => {
-    try {
-      const res = await fetch(API);
-      if (!res.ok) throw new Error();
-      setRecipes(await res.json());
-    } catch {
-      say("Zaledje ni dosegljivo. Preveri, ali teče na vratih 8080.", true);
-    }
-  };
-
+  // Iskanje: počakaj 300 ms po zadnji črki, nato išči od prve strani
   useEffect(() => {
-    loadAll();
-  }, []);
+    const t = setTimeout(() => {
+      setSearch(searchInput.trim());
+      setPage(0);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  // READ (vsi): vedno ko se spremeni iskanje, stran, razvrščanje ali podatki
+  useEffect(() => {
+    let cancelled = false;
+    const [sortBy, direction] = sort.split(",");
+    const params = new URLSearchParams({ q: search, page, size: PAGE_SIZE, sortBy, direction });
+
+    (async () => {
+      try {
+        const res = await fetch(`${API}?${params}`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        if (cancelled) return;
+        if (data.content.length === 0 && page > 0) {
+          setPage(page - 1); // izbrisan zadnji recept na strani
+          return;
+        }
+        setRecipes(data.content);
+        setTotal(data.totalElements);
+        setTotalPages(data.totalPages);
+        setStatus((s) => (s.error ? { text: "", error: false } : s));
+      } catch {
+        if (!cancelled) say("Zaledje ni dosegljivo. Preveri, ali teče na vratih 8080.", true);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [search, page, sort, refresh]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -50,12 +94,18 @@ export default function App() {
         body: JSON.stringify(body),
       });
       if (!res.ok) throw new Error();
+      if (!editingId) {
+        // nov recept: počisti iskanje in pojdi na prvo stran
+        setSearchInput("");
+        setSearch("");
+        setPage(0);
+      }
       say(editingId ? "Recept je shranjen." : "Recept je dodan.");
       setForm(emptyForm);
       setEditingId(null);
       setOpenId(null);
       setDetail(null);
-      loadAll();
+      reload();
     } catch {
       say("Recepta ni bilo mogoče shraniti.", true);
     }
@@ -108,14 +158,13 @@ export default function App() {
       }
       if (editingId === id) cancelEdit();
       setConfirmId(null);
-      loadAll();
+      reload();
     } catch {
       say("Recepta ni bilo mogoče izbrisati.", true);
     }
   };
 
-  const splitList = (text) =>
-    (text || "").split(",").map((s) => s.trim()).filter(Boolean);
+  const splitList = (text) => (text || "").split(",").map((s) => s.trim()).filter(Boolean);
 
   return (
     <div className="page">
@@ -167,11 +216,39 @@ export default function App() {
         <section>
           <div className="list-head">
             <h2>Vsi recepti</h2>
-            <span className="count">{recipes.length}</span>
+            <span className="count">
+              {search ? `${total} zadetkov za »${search}«` : `${total} receptov`}
+            </span>
+          </div>
+
+          <div className="toolbar">
+            <input
+              type="search"
+              className="search"
+              placeholder="Išči po naslovu ali sestavinah"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              aria-label="Iskanje receptov"
+            />
+            <select
+              className="sort"
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                setPage(0);
+              }}
+              aria-label="Razvrščanje"
+            >
+              {SORT_OPTIONS.map((o) => (
+                <option key={o.value} value={o.value}>{o.label}</option>
+              ))}
+            </select>
           </div>
 
           {recipes.length === 0 ? (
-            <p className="empty">Še ni receptov. Dodaj prvega v obrazcu.</p>
+            <p className="empty">
+              {search ? "Ni zadetkov. Poskusi z drugo besedo." : "Še ni receptov. Dodaj prvega v obrazcu."}
+            </p>
           ) : (
             <ul className="recipes">
               {recipes.map((r) => (
@@ -221,6 +298,18 @@ export default function App() {
                 </li>
               ))}
             </ul>
+          )}
+
+          {totalPages > 1 && (
+            <nav className="pager" aria-label="Strani">
+              <button className="btn-text" disabled={page === 0} onClick={() => setPage(page - 1)}>
+                Prejšnja
+              </button>
+              <span>Stran {page + 1} od {totalPages}</span>
+              <button className="btn-text" disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+                Naslednja
+              </button>
+            </nav>
           )}
         </section>
       </div>
