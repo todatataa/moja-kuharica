@@ -3,11 +3,11 @@ services:
     image: postgres:16
     container_name: recipes-db
     environment:
-      POSTGRES_DB: recipesdb
-      POSTGRES_USER: recipes
-      POSTGRES_PASSWORD: recipes123
+      POSTGRES_DB: ${DB_NAME:-recipesdb}
+      POSTGRES_USER: ${DB_USER:-recipes}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-recipes123}
     ports:
-      - "5433:5432"
+      - "${DB_PORT:-5433}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 

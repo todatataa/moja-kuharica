@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
-const API = "http://localhost:8080/api/recipes";
+const API = import.meta.env.VITE_API_URL || "http://localhost:8080/api/recipes";
 const PAGE_SIZE = 5;
 
 const SORT_OPTIONS = [
@@ -21,7 +21,7 @@ const emptyForm = {
   preparationTimeMinutes: "",
 };
 
-export default function App() {
+export default function App() { //nova stanja
   const [recipes, setRecipes] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -41,7 +41,7 @@ export default function App() {
   const say = (text, error = false) => setStatus({ text, error });
   const reload = () => setRefresh((n) => n + 1);
 
-  // Iskanje: počakaj 300 ms po zadnji črki, nato išči od prve strani
+  // pretraga s delayom
   useEffect(() => {
     const t = setTimeout(() => {
       setSearch(searchInput.trim());
@@ -50,7 +50,7 @@ export default function App() {
     return () => clearTimeout(t);
   }, [searchInput]);
 
-  // READ (vsi): vedno ko se spremeni iskanje, stran, razvrščanje ali podatki
+  // glavni read svih
   useEffect(() => {
     let cancelled = false;
     const [sortBy, direction] = sort.split(",");
@@ -169,7 +169,7 @@ export default function App() {
   return (
     <div className="page">
       <header className="masthead">
-        <h1>Moja kuharica</h1>
+        <h1>Recepti</h1>
         <p>Recepti, ki jih ne želiš izgubiti.</p>
       </header>
 

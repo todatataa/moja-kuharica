@@ -31,12 +31,12 @@ public class RecipeController {
         return repository.save(recipe);
     }
 
-    // READ - vsi (z iskanjem, paginacijo in razvrščanjem)
+    // READ vsi
     @Operation(summary = "Vrne recepte z iskanjem, paginacijo in razvrščanjem")
     @GetMapping
     public PagedResponse<Recipe> getAll(
             @Parameter(description = "Iskalni niz (išče po naslovu in sestavinah)")
-            @RequestParam(defaultValue = "") String q,
+            @RequestParam(defaultValue = "") String q, //za search string iz urla npr jaja
             @Parameter(description = "Številka strani (začne se pri 0)")
             @RequestParam(defaultValue = "0") int page,
             @Parameter(description = "Število receptov na stran")
