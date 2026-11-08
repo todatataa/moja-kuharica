@@ -11,6 +11,7 @@ Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. Nast
 5. [REST API](#5-rest-api)
 6. [Navodila za razvijalce](#6-navodila-za-razvijalce)
 7. [Standardi kodiranja](#7-standardi-kodiranja)
+8. [DPU](#8DPU)
 
 ## 1. O projektu
 
@@ -270,6 +271,12 @@ Mape `target/` in `node_modules/`, datoteke `.env`, gesla in ključe ter nastavi
 - Naslov API-ja je v spremenljivki (`VITE_API_URL`), ne razpršen po kodi.
 - Razredi CSS v `kebab-case`.
 - Napake pri klicih API-ja se obravnavajo (`try/catch`) in uporabniku se prikaže sporočilo.
+
+## 8. DPU
+<img width="696" height="592" alt="Moja-Kuharica-DPU" src="https://github.com/user-attachments/assets/125ec5d5-b48c-4dd2-a01c-89cd25943f01" />
+
+
+
 
 ## Avtor
 
