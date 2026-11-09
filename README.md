@@ -12,6 +12,8 @@ Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. Nast
 6. [Navodila za razvijalce](#6-navodila-za-razvijalce)
 7. [Standardi kodiranja](#7-standardi-kodiranja)
 8. [DPU](#8DPU)
+9. [Vizija projekta](#-vizija-projekta)
+10. [Besednjak](#-besednjak)
 
 ## 1. O projektu
 
@@ -275,9 +277,54 @@ Mape `target/` in `node_modules/`, datoteke `.env`, gesla in ključe ter nastavi
 ## 8. DPU
 <img width="696" height="592" alt="Moja-Kuharica-DPU" src="https://github.com/user-attachments/assets/125ec5d5-b48c-4dd2-a01c-89cd25943f01" />
 
+## 9. Vizija projekta
+
+### 9.1 Opis rešitve
+
+Vizija projekta **Moja kuharica** je razviti pregledno in enostavno spletno aplikacijo, ki uporabnikom omogoča shranjevanje, organiziranje in iskanje kuharskih receptov na enem mestu.
+
+Aplikacija je namenjena vsem, ki radi kuhajo in želijo imeti svoje najljubše recepte urejene ter hitro dostopne, predvsem študentom, domačim kuharjem in ljubiteljem kuhanja.
+
+Glavni cilj aplikacije je poenostaviti shranjevanje in iskanje receptov ter zmanjšati potrebo po uporabi različnih zapiskov ali drugih virov. Uporabniku želimo omogočiti, da hitro najde želeni recept in pridobi vse potrebne informacije za pripravo jedi.
+
+### 9.2 Ključne funkcionalnosti
+
+Aplikacija omogoča naslednje funkcionalnosti:
+
+- **Dodajanje receptov:** uporabnik lahko shrani nov recept z naslovom, opisom, sestavinami, navodili in časom priprave.
+- **Pregledovanje receptov:** uporabnik lahko pregleduje shranjene recepte in njihove podrobnosti.
+- **Urejanje receptov:** uporabnik lahko spremeni podatke obstoječega recepta.
+- **Brisanje receptov:** uporabnik lahko odstrani recept, ki ga ne potrebuje več.
+- **Iskanje receptov:** omogočeno je iskanje po naslovu recepta in sestavinah.
+- **Razvrščanje receptov:** recepte je mogoče razvrščati po naslovu, času nastanka ali času priprave.
+- **Paginacija:** recepti so razdeljeni na posamezne strani, kar omogoča preglednejši prikaz večjega števila receptov.
+
+### 9.3 Obseg rešitve in morebitne omejitve
+
+Projekt je osredotočen na osnovno upravljanje kuharskih receptov in omogoča njihovo shranjevanje, pregledovanje, urejanje, brisanje ter iskanje.
+
+Aplikacija deluje kot spletna rešitev, zato uporabnik do nje dostopa prek spletnega brskalnika. Za delovanje potrebuje ustrezno vzpostavljeno strežniško okolje in podatkovno bazo.
+
+Trenutni obseg projekta se osredotoča predvsem na organizacijo receptov. Naprednejše možnosti, kot so samodejno izračunavanje hranilnih vrednosti, izdelava nakupovalnih seznamov ali načrtovanje tedenskih jedilnikov, lahko predstavljajo prihodnje nadgradnje aplikacije.
+
+## 10. Besednjak
+
+V spodnji tabeli so predstavljeni pomembni domenski izrazi, ki se uporabljajo v aplikaciji Moja kuharica.
+
+| Izraz | Razlaga |
+|---|---|
+| **Recept** | Zapis, ki vsebuje informacije in navodila za pripravo določene jedi. |
+| **Naslov recepta** | Ime recepta oziroma jedi, po katerem lahko uporabnik recept prepozna in poišče. |
+| **Opis recepta** | Kratka predstavitev jedi ali dodatne informacije o receptu. |
+| **Sestavina** | Živilo ali druga prehranska sestavina, potrebna za pripravo jedi. |
+| **Navodila za pripravo** | Zaporedje korakov, ki opisujejo postopek priprave jedi. |
+| **Čas priprave** | Predvideni čas, potreben za pripravo jedi. |
+| **Zbirka receptov** | Nabor receptov, ki so shranjeni v aplikaciji in jih uporabnik lahko pregleduje. |
+| **Čas nastanka recepta** | Podatek o tem, kdaj je bil recept dodan v aplikacijo. Uporablja se tudi za razvrščanje receptov. |
 
 
 
-## Avtor
 
-Ivan Todić, FERI, Univerza v Mariboru.
+## Avtori
+
+Ivan Todić, Branka Jelača, Janja Đokić FERI, Univerza v Mariboru.
