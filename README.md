@@ -33,6 +33,8 @@ Moja kuharica uporabniku omogoča, da na enem mestu hrani svoje recepte. Vsak re
 - razvrščanje po času nastanka, naslovu in času priprave,
 - interaktivna dokumentacija API-ja (Swagger UI).
 
+Podrobni opisi načrtovanih primerov uporabe: [docs/podrobni_opisi_primerov_uporabe.md](docs/podrobni_opisi_primerov_uporabe.md)
+
 ## 2. Uporabljene tehnologije
 
 | Del | Tehnologija | Verzija |
