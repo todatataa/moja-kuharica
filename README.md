@@ -291,15 +291,22 @@ Glavni cilj aplikacije je poenostaviti shranjevanje in iskanje receptov ter zman
 
 ### 9.2 Ključne funkcionalnosti
 
-Aplikacija omogoča naslednje funkcionalnosti:
+Aplikacija podpira dve vlogi: **gosta** (neprijavljen obiskovalec) in **uporabnika** (prijavljen član). Uporabnik je specializacija gosta, zato lahko izvaja vse funkcionalnosti gosta, poleg tega pa še dodatne, ki zahtevajo prijavo.
 
-- **Dodajanje receptov:** uporabnik lahko shrani nov recept z naslovom, opisom, sestavinami, navodili in časom priprave.
-- **Pregledovanje receptov:** uporabnik lahko pregleduje shranjene recepte in njihove podrobnosti.
-- **Urejanje receptov:** uporabnik lahko spremeni podatke obstoječega recepta.
-- **Brisanje receptov:** uporabnik lahko odstrani recept, ki ga ne potrebuje več.
+**Funkcionalnosti gosta:**
+
+- **Ogled receptov:** gost lahko pregleduje objavljene recepte in njihove podrobnosti (naslov, opis, sestavine, navodila in čas priprave).
 - **Iskanje receptov:** omogočeno je iskanje po naslovu recepta in sestavinah.
-- **Razvrščanje receptov:** recepte je mogoče razvrščati po naslovu, času nastanka ali času priprave.
-- **Paginacija:** recepti so razdeljeni na posamezne strani, kar omogoča preglednejši prikaz večjega števila receptov.
+- **Filtriranje receptov:** rezultate iskanja je mogoče dodatno zožiti z izbranimi kriteriji. Filtriranje je razširitev iskanja in se izvede samo, kadar ga gost izbere.
+
+**Funkcionalnosti uporabnika:**
+
+- **Objavljanje receptov:** uporabnik lahko objavi nov recept z naslovom, opisom, navodili in časom priprave. Del objave je obvezen vnos sestavin, brez katerega recepta ni mogoče objaviti.
+- **Ogled svojih receptov:** uporabnik ima pregled nad recepti, ki jih je sam objavil.
+- **Urejanje svojih receptov:** pri ogledu svojih receptov lahko uporabnik po želji spremeni podatke obstoječega recepta. Urejanje je razširitev ogleda svojih receptov.
+- **Ocenjevanje receptov:** uporabnik lahko recepte drugih uporabnikov oceni.
+- **Komentiranje receptov:** uporabnik lahko recepte komentira in deli svoje izkušnje.
+- **Všečkanje receptov:** uporabnik lahko recepte všečka in si tako označi tiste, ki so mu všeč.
 
 ### 9.3 Obseg rešitve in morebitne omejitve
 
