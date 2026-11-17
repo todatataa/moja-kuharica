@@ -35,6 +35,8 @@ Moja kuharica uporabniku omogoča, da na enem mestu hrani svoje recepte. Vsak re
 
 Podrobni opisi načrtovanih primerov uporabe: [docs/podrobni_opisi_primerov_uporabe.md](docs/podrobni_opisi_primerov_uporabe.md)
 
+Uporabniške zgodbe: [docs/user-stories.md](docs/user-stories.md)
+
 ## 2. Uporabljene tehnologije
 
 | Del | Tehnologija | Verzija |
