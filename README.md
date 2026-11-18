@@ -1,5 +1,10 @@
 # Moja kuharica
 
+Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. 
+Avtorji: Ivan Todić, Branka Jelača, Janja Đokić
+
+Fakulteta: Fakulteta za elektrotehniko, računalništvo in informatiko (FERI), Univerza v Mariboru
+
 Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. Nastala je kot študentski projekt na FERI (Univerza v Mariboru).
 
 ## Kazalo
@@ -27,7 +32,7 @@ Moja kuharica uporabniku omogoča, da na enem mestu hrani svoje recepte. Vsak re
 
 **Funkcionalnosti:**
 
-- dodajanje, pregledovanje, urejanje in brisanje receptov (CRUD),
+- dodajanje, pregledovanje in urejanje receptov (CRUD),
 - iskanje po naslovu in sestavinah,
 - paginacija (5 receptov na stran),
 - razvrščanje po času nastanka, naslovu in času priprave,
@@ -330,30 +335,48 @@ Aplikacija podpira dve vlogi: **gosta** (neprijavljen obiskovalec) in **uporabni
 
 ### 9.3 Obseg rešitve in morebitne omejitve
 
-Projekt je osredotočen na osnovno upravljanje kuharskih receptov in omogoča njihovo shranjevanje, pregledovanje, urejanje, brisanje ter iskanje.
+Projekt Moja kuharica je osredotočen na shranjevanje, pregledovanje, iskanje in urejanje kuharskih receptov. Namen rešitve je uporabnikom omogočiti enostavno organizacijo receptov in dostop do informacij, potrebnih za pripravo jedi.
 
-Aplikacija deluje kot spletna rešitev, zato uporabnik do nje dostopa prek spletnega brskalnika. Za delovanje potrebuje ustrezno vzpostavljeno strežniško okolje in podatkovno bazo.
+Trenutna rešitev ima naslednje omejitve:
 
-Trenutni obseg projekta se osredotoča predvsem na organizacijo receptov. Naprednejše možnosti, kot so samodejno izračunavanje hranilnih vrednosti, izdelava nakupovalnih seznamov ali načrtovanje tedenskih jedilnikov, lahko predstavljajo prihodnje nadgradnje aplikacije.
+- **Brez samostojne mobilne aplikacije:** aplikacija je zasnovana kot spletna aplikacija, do katere uporabniki dostopajo prek spletnega brskalnika.
+- **Brez samodejnega izračunavanja hranilnih vrednosti:** aplikacija ne izračunava kalorij, beljakovin, maščob ali drugih hranilnih vrednosti jedi.
+- **Brez samodejnega ustvarjanja nakupovalnih seznamov:** aplikacija ne omogoča samodejnega oblikovanja nakupovalnega seznama na podlagi sestavin izbranih receptov.
+- **Brez načrtovanja tedenskih jedilnikov:** uporabniki ne morejo sestavljati tedenskih načrtov prehrane.
+- **Brez samodejnega prilagajanja količin sestavin:** aplikacija ne preračunava količin sestavin glede na izbrano število porcij.
+
+Navedene omejitve določajo trenutni obseg rešitve in funkcionalnosti, ki niso vključene v projekt.
 
 ## 10. Besednjak
 
 V spodnji tabeli so predstavljeni pomembni domenski izrazi, ki se uporabljajo v aplikaciji Moja kuharica.
 
+
 | Izraz | Razlaga |
 |---|---|
-| **Recept** | Zapis, ki vsebuje informacije in navodila za pripravo določene jedi. |
-| **Naslov recepta** | Ime recepta oziroma jedi, po katerem lahko uporabnik recept prepozna in poišče. |
-| **Opis recepta** | Kratka predstavitev jedi ali dodatne informacije o receptu. |
-| **Sestavina** | Živilo ali druga prehranska sestavina, potrebna za pripravo jedi. |
-| **Navodila za pripravo** | Zaporedje korakov, ki opisujejo postopek priprave jedi. |
-| **Čas priprave** | Predvideni čas, potreben za pripravo jedi. |
-| **Zbirka receptov** | Nabor receptov, ki so shranjeni v aplikaciji in jih uporabnik lahko pregleduje. |
-| **Čas nastanka recepta** | Podatek o tem, kdaj je bil recept dodan v aplikacijo. Uporablja se tudi za razvrščanje receptov. |
+| Recept | Zapis, ki vsebuje informacije in navodila za pripravo določene jedi. |
+| Naslov recepta | Ime recepta oziroma jedi, po katerem lahko uporabnik recept prepozna in poišče. |
+| Opis recepta | Kratka predstavitev jedi ali dodatne informacije o receptu. |
+| Sestavina | Živilo ali druga prehranska sestavina, potrebna za pripravo jedi. |
+| Navodila za pripravo | Zaporedje korakov, ki opisujejo postopek priprave jedi. |
+| Čas priprave | Predvideni čas, potreben za pripravo jedi. |
+| Zbirka receptov | Nabor receptov, ki so shranjeni v aplikaciji in jih uporabnik lahko pregleduje. |
+| Čas nastanka recepta | Podatek o tem, kdaj je bil recept dodan v aplikacijo. Uporablja se tudi za razvrščanje receptov. |
+| Gost | Neprijavljen obiskovalec aplikacije, ki lahko pregleduje in išče recepte. |
+| Uporabnik | Registrirana oseba, ki se lahko prijavi v aplikacijo in uporablja dodatne funkcionalnosti. |
+| Avtor recepta | Uporabnik, ki je ustvaril in objavil recept v aplikaciji. |
+| Ocena | Vrednost, s katero uporabnik izrazi svoje mnenje o kakovosti recepta. |
+| Povprečna ocena | Povprečna vrednost vseh ocen, ki so jih uporabniki dodelili določenemu receptu. |
+| Komentar | Besedilno mnenje ali izkušnja, ki jo uporabnik napiše ob receptu. |
+| Všeček | Oznaka, s katero uporabnik izrazi, da mu je določen recept všeč. |
+| Priljubljeni recept | Recept, ki ga uporabnik shrani na svoj seznam priljubljenih za lažji poznejši dostop. |
+| Iskanje receptov | Postopek iskanja receptov glede na vnesene ključne besede, na primer naslov ali sestavine. |
+| Filtriranje receptov | Omejevanje prikazanih receptov glede na izbrane kriterije. |
+| Razvrščanje receptov | Urejanje seznama receptov po izbranem vrstnem redu, na primer po naslovu ali času priprave. |
+| RIS | Razvoj informacijskih sistemov, predmet, v okviru katerega nastaja projekt Moja kuharica. |
 
 
 
 
-## Avtori
 
-Ivan Todić, Branka Jelača, Janja Đokić FERI, Univerza v Mariboru.
+
