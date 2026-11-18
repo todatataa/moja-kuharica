@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { API, apiFetch } from "./api";
+import { useAuth } from "./AuthContext";
+import AuthPanel from "./AuthPanel";
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:8080/api/recipes";
 const PAGE_SIZE = 5;
 
 const SORT_OPTIONS = [
@@ -22,6 +24,7 @@ const emptyForm = {
 };
 
 export default function App() { //nova stanja
+  const { user, loading, logout, sessionExpired } = useAuth();
   const [recipes, setRecipes] = useState([]);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -41,6 +44,34 @@ export default function App() { //nova stanja
   const say = (text, error = false) => setStatus({ text, error });
   const reload = () => setRefresh((n) => n + 1);
 
+  // Zaledje vrne 401, ko je seja potekla: uporabnika odjavimo in ga prosimo za novo prijavo.
+  const handleAuthFailure = (res) => {
+    if (res.status !== 401) return false;
+    sessionExpired();
+    cancelEdit();
+    setConfirmId(null);
+    say("Seja je potekla. Prijavi se znova.", true);
+    return true;
+  };
+
+  // 403: recept pripada drugemu uporabniku.
+  const handleForbidden = (res) => {
+    if (res.status !== 403) return false;
+    setConfirmId(null);
+    say("Recept lahko ureja ali briše samo njegov avtor.", true);
+    return true;
+  };
+
+  // Gumba Uredi/Izbriši prikažemo samo avtorju (stari recepti brez avtorja so odprti za vse prijavljene).
+  const canModify = (r) => Boolean(user) && (r.ownerId == null || r.ownerId === user.id);
+
+  const handleLogout = async () => {
+    await logout();
+    cancelEdit();
+    setConfirmId(null);
+    say("Odjavljen si.");
+  };
+
   // pretraga s delayom
   useEffect(() => {
     const t = setTimeout(() => {
@@ -58,7 +89,7 @@ export default function App() { //nova stanja
 
     (async () => {
       try {
-        const res = await fetch(`${API}?${params}`);
+        const res = await apiFetch(`${API}?${params}`);
         if (!res.ok) throw new Error();
         const data = await res.json();
         if (cancelled) return;
@@ -88,11 +119,13 @@ export default function App() { //nova stanja
     const body = { ...form, preparationTimeMinutes: Number(form.preparationTimeMinutes) || 0 };
     const url = editingId ? `${API}/${editingId}` : API;
     try {
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method: editingId ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
+      if (handleAuthFailure(res)) return;
+      if (handleForbidden(res)) return;
       if (!res.ok) throw new Error();
       if (!editingId) {
         // nov recept: počisti iskanje in pojdi na prvo stran
@@ -119,7 +152,7 @@ export default function App() { //nova stanja
       return;
     }
     try {
-      const res = await fetch(`${API}/${id}`);
+      const res = await apiFetch(`${API}/${id}`);
       if (!res.ok) throw new Error();
       setDetail(await res.json());
       setOpenId(id);
@@ -149,7 +182,9 @@ export default function App() { //nova stanja
   // DELETE
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`${API}/${id}`, { method: "DELETE" });
+      if (handleAuthFailure(res)) return;
+      if (handleForbidden(res)) return;
       if (!res.ok) throw new Error();
       say("Recept je izbrisan.");
       if (openId === id) {
@@ -169,49 +204,63 @@ export default function App() { //nova stanja
   return (
     <div className="page">
       <header className="masthead">
+        <div className="userbar">
+          {user && (
+            <>
+              <span>Prijavljen kot <strong>{user.username}</strong></span>
+              <button className="btn-text" onClick={handleLogout}>Odjava</button>
+            </>
+          )}
+        </div>
         <h1>Recepti</h1>
         <p>Recepti, ki jih ne želiš izgubiti.</p>
       </header>
 
       <div className="layout">
-        <section className="editor">
-          {editingId && <span className="editing-badge">Urejanje recepta</span>}
-          <h2>{editingId ? "Uredi recept" : "Nov recept"}</h2>
-          <p className="hint">Sestavine loči z vejico.</p>
-          <form onSubmit={handleSubmit}>
-            <label>
-              Naslov
-              <input name="title" value={form.title} onChange={handleChange} placeholder="npr. Palačinke" required />
-            </label>
-            <label>
-              Kratek opis
-              <input name="description" value={form.description} onChange={handleChange} placeholder="npr. Klasične palačinke za zajtrk" />
-            </label>
-            <label>
-              Sestavine
-              <textarea name="ingredients" value={form.ingredients} onChange={handleChange} placeholder="200 g moke, 2 jajci, 300 ml mleka" />
-            </label>
-            <label>
-              Navodila
-              <textarea name="instructions" value={form.instructions} onChange={handleChange} placeholder="Zmešaj sestavine in speci na ponvi." />
-            </label>
-            <label>
-              Čas priprave (minute)
-              <input type="number" min="0" name="preparationTimeMinutes" value={form.preparationTimeMinutes} onChange={handleChange} placeholder="30" />
-            </label>
-            <div className="actions">
-              <button type="submit" className="btn-primary">
-                {editingId ? "Shrani spremembe" : "Dodaj recept"}
-              </button>
-              {editingId && (
-                <button type="button" className="btn-text" onClick={cancelEdit}>
-                  Prekliči
+        {loading ? (
+          <section className="editor" aria-busy="true" />
+        ) : user ? (
+          <section className="editor">
+            {editingId && <span className="editing-badge">Urejanje recepta</span>}
+            <h2>{editingId ? "Uredi recept" : "Nov recept"}</h2>
+            <p className="hint">Sestavine loči z vejico.</p>
+            <form onSubmit={handleSubmit}>
+              <label>
+                Naslov
+                <input name="title" value={form.title} onChange={handleChange} placeholder="npr. Palačinke" required />
+              </label>
+              <label>
+                Kratek opis
+                <input name="description" value={form.description} onChange={handleChange} placeholder="npr. Klasične palačinke za zajtrk" />
+              </label>
+              <label>
+                Sestavine
+                <textarea name="ingredients" value={form.ingredients} onChange={handleChange} placeholder="200 g moke, 2 jajci, 300 ml mleka" />
+              </label>
+              <label>
+                Navodila
+                <textarea name="instructions" value={form.instructions} onChange={handleChange} placeholder="Zmešaj sestavine in speci na ponvi." />
+              </label>
+              <label>
+                Čas priprave (minute)
+                <input type="number" min="0" name="preparationTimeMinutes" value={form.preparationTimeMinutes} onChange={handleChange} placeholder="30" />
+              </label>
+              <div className="actions">
+                <button type="submit" className="btn-primary">
+                  {editingId ? "Shrani spremembe" : "Dodaj recept"}
                 </button>
-              )}
-            </div>
-          </form>
-          <p className={`status ${status.error ? "error" : ""}`} role="status">{status.text}</p>
-        </section>
+                {editingId && (
+                  <button type="button" className="btn-text" onClick={cancelEdit}>
+                    Prekliči
+                  </button>
+                )}
+              </div>
+            </form>
+            <p className={`status ${status.error ? "error" : ""}`} role="status">{status.text}</p>
+          </section>
+        ) : (
+          <AuthPanel notice={status} />
+        )}
 
         <section>
           <div className="list-head">
@@ -265,15 +314,19 @@ export default function App() { //nova stanja
                         <button className="btn-text" onClick={() => toggleDetail(r.id)}>
                           {openId === r.id ? "Skrij" : "Poglej"}
                         </button>
-                        <button className="btn-text" onClick={() => startEdit(r)}>Uredi</button>
-                        {confirmId === r.id ? (
+                        {canModify(r) && (
                           <>
-                            <span className="confirm">Izbrišem recept?</span>
-                            <button className="btn-text danger" onClick={() => handleDelete(r.id)}>Da, izbriši</button>
-                            <button className="btn-text" onClick={() => setConfirmId(null)}>Ne</button>
+                            <button className="btn-text" onClick={() => startEdit(r)}>Uredi</button>
+                            {confirmId === r.id ? (
+                              <>
+                                <span className="confirm">Izbrišem recept?</span>
+                                <button className="btn-text danger" onClick={() => handleDelete(r.id)}>Da, izbriši</button>
+                                <button className="btn-text" onClick={() => setConfirmId(null)}>Ne</button>
+                              </>
+                            ) : (
+                              <button className="btn-text danger" onClick={() => setConfirmId(r.id)}>Izbriši</button>
+                            )}
                           </>
-                        ) : (
-                          <button className="btn-text danger" onClick={() => setConfirmId(r.id)}>Izbriši</button>
                         )}
                       </div>
 

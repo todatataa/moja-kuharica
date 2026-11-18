@@ -46,10 +46,10 @@
             <version>3.0.0</version>
         </dependency>
 
-        <!-- BCrypt: varno zgoščevanje uporabniških gesel -->
+        <!-- Spring Security: prijava, seja, zaščita končnih točk (vključuje tudi BCrypt) -->
         <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-crypto</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <dependency>

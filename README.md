@@ -157,7 +157,9 @@ Vse imajo privzete vrednosti za lokalni razvoj, zato jih za osnovni zagon ni tre
 | `DB_PASSWORD` | Docker Compose, zaledje | `recipes123` |
 | `DB_PORT` | Docker Compose (vrata na računalniku) | `5433` |
 | `DB_URL` | zaledje (JDBC naslov) | `jdbc:postgresql://localhost:5433/recipesdb` |
-| `VITE_API_URL` | obličje (naslov API-ja) | `http://localhost:8080/api/recipes` |
+| `VITE_API_URL` | obličje (naslov API-ja za recepte) | `http://localhost:8080/api/recipes` |
+| `VITE_AUTH_URL` | obličje (naslov API-ja za prijavo) | `http://localhost:8080/api/auth` |
+| `CORS_ORIGIN` | zaledje (izvor obličja, ki sme pošiljati piškotke) | `http://localhost:5173` |
 
 Docker Compose prebere datoteko `.env` v korenu projekta samodejno. Zaledje je ne bere, zato spremenljivke nastavi v terminalu (`export DB_PASSWORD=...`) ali v zagonski konfiguraciji IntelliJ. Če spremeniš `DB_PORT`, spremeni tudi `DB_URL`.
 
@@ -185,6 +187,21 @@ Osnovni naslov: `http://localhost:8080/api/recipes`. Polna dokumentacija je v Sw
 | GET | `/api/recipes/{id}` | vrne en recept (404, če ne obstaja) |
 | PUT | `/api/recipes/{id}` | posodobi recept (404, če ne obstaja) |
 | DELETE | `/api/recipes/{id}` | izbriše recept (204 / 404) |
+
+Branje receptov (`GET`) je odprto vsem. Dodajanje, urejanje in brisanje zahteva prijavo, sicer zaledje vrne `401`. Recept lahko spreminja ali briše samo njegov avtor (`ownerId`), sicer zaledje vrne `403`. Stari recepti brez avtorja so odprti za vse prijavljene.
+
+### Uporabniki in prijava
+
+Prijava uporablja HTTP sejo (piškotek `JSESSIONID`). Obličje mora zato vse zahteve pošiljati z `credentials: "include"` (to naredi `apiFetch` v `frontend/src/api.js`).
+
+| Metoda | Pot | Opis |
+|---|---|---|
+| POST | `/api/auth/register` | registracija (201, 400 pri neveljavnih podatkih, 409 pri zasedenem imenu ali e-naslovu) |
+| POST | `/api/auth/login` | prijava z uporabniškim imenom ali e-naslovom (200 / 401) |
+| POST | `/api/auth/logout` | odjava, razveljavi sejo (204) |
+| GET | `/api/auth/me` | trenutno prijavljen uporabnik (401, če ni prijave) |
+
+Obličje in zaledje morata biti odprta na istem gostitelju (obe na `localhost`), sicer brskalnik piškotka seje ne pošlje.
 
 Parametri za `GET /api/recipes`:
 
