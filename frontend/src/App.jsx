@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { API, apiFetch } from "./api";
+import { API, FAVORITES_API, apiFetch } from "./api";
 import { useAuth } from "./AuthContext";
 import AuthPanel from "./AuthPanel";
 
@@ -26,6 +26,8 @@ const emptyForm = {
 export default function App() { //nova stanja
   const { user, loading, logout, sessionExpired } = useAuth();
   const [recipes, setRecipes] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [showFavorites, setShowFavorites] = useState(false);
   const [total, setTotal] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(0);
@@ -110,6 +112,88 @@ export default function App() { //nova stanja
       cancelled = true;
     };
   }, [search, page, sort, refresh]);
+
+
+  // Nalaganje priljubljenih receptov prijavljenega uporabnika
+  useEffect(() => {
+    let cancelled = false;
+
+    // Neprijavljen uporabnik nima dostopa do priljubljenih receptov
+    if (!user) {
+      setFavorites([]);
+      setShowFavorites(false);
+      return;
+    }
+
+    const loadFavorites = async () => {
+      try {
+        const res = await apiFetch(FAVORITES_API);
+
+        if (!res.ok) {
+          throw new Error("Napaka pri nalaganju priljubljenih receptov.");
+        }
+
+        const data = await res.json();
+
+        if (!cancelled) {
+          setFavorites(data);
+        }
+      } catch {
+        if (!cancelled) {
+          setStatus({
+            text: "Priljubljenih receptov ni bilo mogoče naložiti.",
+            error: true
+          });
+        }
+      }
+    };
+
+    loadFavorites();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user]);
+
+
+
+  // Dodajanje ali odstranjevanje recepta iz priljubljenih
+  const toggleFavorite = async (recipe) => {
+
+    if (!user) {
+      say("Za shranjevanje priljubljenih receptov se moraš prijaviti.", true);
+      return;
+    }
+
+    const isFavorite = favorites.some(
+        (favorite) => favorite.id === recipe.id
+    );
+
+    try {
+      const res = await apiFetch(`${API}/${recipe.id}/favorite`, {
+        method: isFavorite ? "DELETE" : "PUT"
+      });
+
+      if (handleAuthFailure(res)) return;
+
+      if (!res.ok) {
+        throw new Error("Napaka pri posodabljanju priljubljenih.");
+      }
+
+      if (isFavorite) {
+        setFavorites((prev) =>
+            prev.filter((favorite) => favorite.id !== recipe.id)
+        );
+        say("Recept je odstranjen iz priljubljenih.");
+      } else {
+        setFavorites((prev) => [...prev, recipe]);
+        say("Recept je dodan med priljubljene.");
+      }
+
+    } catch {
+      say("Priljubljenih receptov ni bilo mogoče posodobiti.", true);
+    }
+  };
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -201,6 +285,10 @@ export default function App() { //nova stanja
 
   const splitList = (text) => (text || "").split(",").map((s) => s.trim()).filter(Boolean);
 
+
+  // Izbira med vsemi recepti in priljubljenimi recepti
+  const visibleRecipes = showFavorites ? favorites : recipes;
+
   return (
     <div className="page">
       <header className="masthead">
@@ -263,14 +351,43 @@ export default function App() { //nova stanja
         )}
 
         <section>
-          <div className="list-head">
-            <h2>Vsi recepti</h2>
-            <span className="count">
-              {search ? `${total} zadetkov za »${search}«` : `${total} receptov`}
-            </span>
+
+          <div className="row-actions">
+            <button
+                type="button"
+                className="btn-text"
+                onClick={() => setShowFavorites(false)}
+                aria-pressed={!showFavorites}
+            >
+              Vsi recepti
+            </button>
+
+            {user && (
+                <button
+                    type="button"
+                    className="btn-text"
+                    onClick={() => setShowFavorites(true)}
+                    aria-pressed={showFavorites}
+                >
+                  ♥ Moji priljubljeni
+                </button>
+            )}
           </div>
 
-          <div className="toolbar">
+          <div className="list-head">
+            <h2>{showFavorites ? "Moji priljubljeni recepti" : "Vsi recepti"}</h2>
+
+            <span className="count">
+  {showFavorites
+      ? `${favorites.length} priljubljenih receptov`
+      : search
+          ? `${total} zadetkov za »${search}«`
+          : `${total} receptov`}
+ </span>
+
+          </div>
+
+          {!showFavorites && ( <div className="toolbar">
             <input
               type="search"
               className="search"
@@ -292,15 +409,21 @@ export default function App() { //nova stanja
                 <option key={o.value} value={o.value}>{o.label}</option>
               ))}
             </select>
-          </div>
+          </div> )}
 
-          {recipes.length === 0 ? (
-            <p className="empty">
-              {search ? "Ni zadetkov. Poskusi z drugo besedo." : "Še ni receptov. Dodaj prvega v obrazcu."}
-            </p>
+
+          {visibleRecipes.length === 0 ? (
+              <p className="empty">
+                {showFavorites
+                    ? "Še nimaš priljubljenih receptov."
+                    : search
+                        ? "Ni zadetkov. Poskusi z drugo besedo."
+                        : "Še ni receptov. Dodaj prvega v obrazcu."}
+              </p>
           ) : (
-            <ul className="recipes">
-              {recipes.map((r) => (
+
+              <ul className="recipes">
+              {visibleRecipes.map((r) => (
                 <li key={r.id} className="recipe">
                   <div className="recipe-row">
                     <div className="time">
@@ -314,6 +437,19 @@ export default function App() { //nova stanja
                         <button className="btn-text" onClick={() => toggleDetail(r.id)}>
                           {openId === r.id ? "Skrij" : "Poglej"}
                         </button>
+
+
+                        <button
+                            type="button"
+                            className="btn-text"
+                            onClick={() => toggleFavorite(r)}
+                            aria-pressed={favorites.some((f) => f.id === r.id)}
+                        >
+                          {favorites.some((f) => f.id === r.id)
+                              ? "♥ Odstrani iz priljubljenih"
+                              : "♡ Dodaj med priljubljene"}
+                        </button>
+
                         {canModify(r) && (
                           <>
                             <button className="btn-text" onClick={() => startEdit(r)}>Uredi</button>
@@ -353,7 +489,7 @@ export default function App() { //nova stanja
             </ul>
           )}
 
-          {totalPages > 1 && (
+          {!showFavorites && totalPages > 1 && (
             <nav className="pager" aria-label="Strani">
               <button className="btn-text" disabled={page === 0} onClick={() => setPage(page - 1)}>
                 Prejšnja
