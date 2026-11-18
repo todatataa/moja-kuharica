@@ -56,7 +56,7 @@ Kot **prijavljen uporabnik** želim **recept oceniti z oceno od 1 do 5**, da **d
 
 3. **Neveljavna ocena**
    - **Given:** sem prijavljen in imam odprt recept,
-   - **When:** poskusim oddati oceno 0 ali 6,
+   - **When:** poskusim oddati oceno 0,
    - **Then:** ocena se ne shrani in prikaže se sporočilo, da mora biti ocena med 1 in 5.
    
 4. **Neprijavljen uporabnik**
@@ -75,7 +75,7 @@ Kot **prijavljen uporabnik** želim **recept oceniti z oceno od 1 do 5**, da **d
 
 | Naloga | Opis | Odgovorni |
 |---|---|---|
-| US-1.1 Zaledje: ocenjevanje | Entiteta `Rating`, repozitorij, končna točka za oddajo in spremembo ocene, preverjanje vrednosti 1 do 5, izračun povprečja. | Branka Jelača |
+| US-1.1 Zaledje: ocenjevanje | Entiteta `Rating`, repozitorij, končna točka za oddajo ocene, preverjanje vrednosti 1 do 5, izračun povprečja. | Branka Jelača |
 | US-1.2 Obličje: ocenjevanje | Komponenta za izbiro ocene, prikaz povprečne ocene in števila ocen, prikaz sporočil o napakah. | Branka Jelača |
 
 ---
