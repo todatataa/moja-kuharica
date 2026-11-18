@@ -3,6 +3,7 @@ import "./App.css";
 import { API, FAVORITES_API, apiFetch } from "./api";
 import { useAuth } from "./AuthContext";
 import AuthPanel from "./AuthPanel";
+import RecipeRating, { RatingSummary } from "./RecipeRating";
 
 const PAGE_SIZE = 5;
 
@@ -245,6 +246,12 @@ export default function App() { //nova stanja
     }
   };
 
+  const handleRated = (updated) => {
+    setDetail((current) => current?.id === updated.id ? updated : current);
+    setFavorites((current) => current.map((recipe) => recipe.id === updated.id ? updated : recipe));
+    reload();
+  };
+
   const startEdit = (r) => {
     setEditingId(r.id);
     setForm({
@@ -432,6 +439,7 @@ export default function App() { //nova stanja
                     </div>
                     <div>
                       <h3>{r.title}</h3>
+                      <RatingSummary recipe={r} />
                       {r.description && <p className="desc">{r.description}</p>}
                       <div className="row-actions">
                         <button className="btn-text" onClick={() => toggleDetail(r.id)}>
@@ -466,21 +474,29 @@ export default function App() { //nova stanja
                         )}
                       </div>
 
-                      {openId === r.id && detail && (
-                        <div className="detail">
-                          <div>
-                            <h4>Sestavine</h4>
-                            <ul>
-                              {splitList(detail.ingredients).map((s, i) => (
-                                <li key={i}>{s}</li>
-                              ))}
-                            </ul>
+                      {openId === r.id && detail?.id === r.id && (
+                        <>
+                          <div className="detail">
+                            <div>
+                              <h4>Sestavine</h4>
+                              <ul>
+                                {splitList(detail.ingredients).map((s, i) => (
+                                  <li key={i}>{s}</li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div>
+                              <h4>Navodila</h4>
+                              <p>{detail.instructions}</p>
+                            </div>
                           </div>
-                          <div>
-                            <h4>Navodila</h4>
-                            <p>{detail.instructions}</p>
-                          </div>
-                        </div>
+                          <RecipeRating
+                            key={`${detail.id}:${user?.id ?? "guest"}`}
+                            recipe={detail}
+                            user={user}
+                            onRated={handleRated}
+                          />
+                        </>
                       )}
                     </div>
                   </div>

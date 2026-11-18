@@ -2,14 +2,18 @@ package si.feri.backend;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import tools.jackson.databind.JsonNode;
 
 import java.util.Set;
 
@@ -22,9 +26,15 @@ public class RecipeController {
     private final RecipeRepository repository;
     private final UserRepository userRepository;
 
-    public RecipeController(RecipeRepository repository, UserRepository userRepository) {
+    private final RatingRepository ratingRepository;
+    private final EntityManager entityManager;
+
+    public RecipeController(RecipeRepository repository, UserRepository userRepository,
+                            RatingRepository ratingRepository, EntityManager entityManager) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.ratingRepository = ratingRepository;
+        this.entityManager = entityManager;
     }
 
     private Long currentUserId(Authentication authentication) {
@@ -95,6 +105,32 @@ public class RecipeController {
         return repository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Operation(summary = "Odda oceno recepta od 1 do 5 (enkrat na uporabnika)")
+    @PutMapping("/{id}/rating")
+    @Transactional
+    public Recipe rate(@PathVariable Long id, @RequestBody(required = false) JsonNode body,
+                       Authentication authentication) {
+        JsonNode value = body == null ? null : body.get("value");
+        if (value == null || !value.isIntegralNumber() || !value.canConvertToInt()
+                || value.intValue() < 1 || value.intValue() > 5) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Ocena mora biti celo število med 1 in 5.");
+        }
+
+        Long userId = currentUserId(authentication);
+        Recipe recipe = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Recept ne obstaja."));
+        if (userId.equals(recipe.getOwnerId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Svojega recepta ne moreš oceniti.");
+        }
+        if (ratingRepository.insertRating(id, userId, value.intValue()) == 0) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Ta recept si že ocenil/a.");
+        }
+
+        entityManager.refresh(recipe);
+        return recipe;
     }
 
     // UPDATE

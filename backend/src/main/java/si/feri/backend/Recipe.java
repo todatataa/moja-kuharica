@@ -1,6 +1,10 @@
 package si.feri.backend;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
+
+import java.math.BigDecimal;
 
 @Entity //klasa recipe je tabela u bazi
 public class Recipe {
@@ -24,6 +28,18 @@ public class Recipe {
 
     // Id avtorja recepta. Stari recepti iz časa pred prijavo ga nimajo (null).
     private Long ownerId;
+
+    @Formula("(select round(avg(r.score), 1) from recipe_ratings r where r.recipe_id = id)")
+    private BigDecimal averageRating;
+
+    @Formula("(select count(*) from recipe_ratings r where r.recipe_id = id)")
+    private long ratingCount;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public BigDecimal getAverageRating() { return averageRating; }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public long getRatingCount() { return ratingCount; }
 
     public Recipe() {}
 

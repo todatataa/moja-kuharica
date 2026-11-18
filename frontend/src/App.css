@@ -91,6 +91,19 @@ button:focus-visible { outline: 2px solid var(--basil); outline-offset: 2px; }
 .detail li { margin-bottom: 2px; }
 .detail p { margin: 0; white-space: pre-line; max-width: 60ch; }
 
+/* ---------- ocenjevanje ---------- */
+.rating-summary { margin: 0 0 8px; color: var(--muted); font-size: 0.9rem; }
+.rating-summary span { color: #835811; }
+.recipe-rating { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+.recipe-rating fieldset { margin: 0 0 10px; padding: 0; border: 0; min-width: 0; }
+.recipe-rating legend { padding: 0; font-weight: 600; }
+.rating-stars { display: flex; flex-wrap: wrap; gap: 4px; }
+.rating-stars label { position: relative; margin: 0; cursor: pointer; }
+.rating-stars input { position: absolute; inset: 0; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.rating-stars span { display: grid; place-items: center; width: 40px; height: 40px; color: #835811; font-size: 1.65rem; }
+.rating-stars input:focus-visible + span { outline: 2px solid var(--basil); outline-offset: 1px; border-radius: 4px; }
+.rating-hint { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
 .empty { padding: 32px 0; color: var(--muted); }
 
 /* ---------- iskanje, razvrščanje, strani ---------- */
