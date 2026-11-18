@@ -5,12 +5,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 
-@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/recipes")
 public class RecipeController {
@@ -18,16 +20,35 @@ public class RecipeController {
     private static final Set<String> SORTABLE = Set.of("id", "title", "preparationTimeMinutes");
 
     private final RecipeRepository repository;
+    private final UserRepository userRepository;
 
-    public RecipeController(RecipeRepository repository) {
+    public RecipeController(RecipeRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
+    }
+
+    private Long currentUserId(Authentication authentication) {
+        return userRepository.findByUsername(authentication.getName())
+                .map(AppUser::getId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.UNAUTHORIZED, "Uporabnik ne obstaja več."));
+    }
+
+    // Recept sme spreminjati njegov avtor. Stari recepti brez avtorja so odprti za vse prijavljene.
+    private void requireOwner(Recipe recipe, Long userId) {
+        if (recipe.getOwnerId() != null && !recipe.getOwnerId().equals(userId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.FORBIDDEN, "Recept lahko ureja ali briše samo njegov avtor.");
+        }
     }
 
     // CREATE
     @Operation(summary = "Doda nov recept")
     @PostMapping
-    public Recipe create(@RequestBody Recipe recipe) {
+    public Recipe create(@RequestBody Recipe recipe, Authentication authentication) {
         recipe.setId(null);
+        // Avtorja vedno določi strežnik, ne odjemalec.
+        recipe.setOwnerId(currentUserId(authentication));
         return repository.save(recipe);
     }
 
@@ -77,11 +98,14 @@ public class RecipeController {
     }
 
     // UPDATE
-    @Operation(summary = "Posodobi obstoječi recept")
+    @Operation(summary = "Posodobi obstoječi recept (samo avtor)")
     @PutMapping("/{id}")
-    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe updated) {
+    public ResponseEntity<Recipe> update(@PathVariable Long id, @RequestBody Recipe updated,
+                                         Authentication authentication) {
+        Long userId = currentUserId(authentication);
         return repository.findById(id)
                 .map(existing -> {
+                    requireOwner(existing, userId);
                     existing.setTitle(updated.getTitle());
                     existing.setDescription(updated.getDescription());
                     existing.setIngredients(updated.getIngredients());
@@ -93,13 +117,16 @@ public class RecipeController {
     }
 
     // DELETE
-    @Operation(summary = "Izbriše recept")
+    @Operation(summary = "Izbriše recept (samo avtor)")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (!repository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        repository.deleteById(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
+        Long userId = currentUserId(authentication);
+        return repository.findById(id)
+                .map(existing -> {
+                    requireOwner(existing, userId);
+                    repository.delete(existing);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 }

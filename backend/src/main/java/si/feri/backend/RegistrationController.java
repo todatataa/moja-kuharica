@@ -1,6 +1,7 @@
 
 package si.feri.backend;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class RegistrationController {
         this.registrationService = registrationService;
     }
 
+    @Operation(summary = "Registracija novega uporabnika")
     @PostMapping("/register")
     public ResponseEntity<Map<String, Object>> register(
             @RequestBody RegisterRequest request) {

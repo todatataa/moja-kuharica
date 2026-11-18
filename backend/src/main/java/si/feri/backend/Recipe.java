@@ -22,6 +22,9 @@ public class Recipe {
 
     private int preparationTimeMinutes;
 
+    // Id avtorja recepta. Stari recepti iz časa pred prijavo ga nimajo (null).
+    private Long ownerId;
+
     public Recipe() {}
 
     public Long getId() { return id; }
@@ -41,4 +44,7 @@ public class Recipe {
 
     public int getPreparationTimeMinutes() { return preparationTimeMinutes; }
     public void setPreparationTimeMinutes(int preparationTimeMinutes) { this.preparationTimeMinutes = preparationTimeMinutes; }
+
+    public Long getOwnerId() { return ownerId; }
+    public void setOwnerId(Long ownerId) { this.ownerId = ownerId; }
 }
