@@ -49,16 +49,16 @@ Kot **prijavljen uporabnik** želim **recept oceniti z oceno od 1 do 5**, da **d
    - **When:** izberem oceno 4 in jo potrdim,
    - **Then:** se ocena shrani in pri receptu se prikaže povprečna ocena 4,0 ter število ocen 1.
 
-2. **Sprememba obstoječe ocene**
-   - **Given:** sem prijavljen in sem recept že ocenil z oceno 4,
-   - **When:** izberem novo oceno 2 in jo potrdim,
-   - **Then:** moja ocena se nadomesti z novo (recept ima še vedno samo eno mojo oceno) in povprečna ocena se preračuna.
+2. **Ponovna ocena istega recepta**
+   - **Given:** sem prijavljen in sem recept že ocenil,
+   - **When:** poskusim isti recept ponovno oceniti,
+   - **Then:** nova ocena se ne shrani, moja prvotna ocena ostane nespremenjena in prikaže se sporočilo, da sem ta recept že ocenil.
 
 3. **Neveljavna ocena**
    - **Given:** sem prijavljen in imam odprt recept,
    - **When:** poskusim oddati oceno 0 ali 6,
    - **Then:** ocena se ne shrani in prikaže se sporočilo, da mora biti ocena med 1 in 5.
-
+   
 4. **Neprijavljen uporabnik**
    - **Given:** nisem prijavljen,
    - **When:** poskusim oceniti recept,
