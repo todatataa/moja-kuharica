@@ -296,7 +296,8 @@ Mape `target/` in `node_modules/`, datoteke `.env`, gesla in ključe ter nastavi
 - Napake pri klicih API-ja se obravnavajo (`try/catch`) in uporabniku se prikaže sporočilo.
 
 ## 8. DPU
-<img width="696" height="592" alt="Moja-Kuharica-DPU" src="https://github.com/user-attachments/assets/125ec5d5-b48c-4dd2-a01c-89cd25943f01" />
+<img width="696" height="653" alt="Moja-Kuharica-DPU (1)" src="https://github.com/user-attachments/assets/23c843fb-eb3d-4fdb-991a-3da936b3f352" />
+
 
 ## 9. Vizija projekta
 
