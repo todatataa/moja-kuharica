@@ -67,7 +67,7 @@ Kot **prijavljen uporabnik** želim **recept oceniti z oceno od 1 do 5**, da **d
 ### Podrobnosti implementacije
 
 - Nova entiteta `Rating` (vrednost 1 do 5), povezana z receptom in uporabnikom. Za par (uporabnik, recept) obstaja največ ena ocena.
-- Končni točki: `PUT /api/recipes/{id}/rating` (odda ali spremeni oceno) in `GET /api/recipes/{id}` (v odgovoru povprečna ocena in število ocen).
+- Končni točki: `PUT /api/recipes/{id}/rating` (odda oceno) in `GET /api/recipes/{id}` (v odgovoru povprečna ocena in število ocen).
 - Povprečna ocena se izračuna v zaledju in je zaokrožena na eno decimalko.
 - Obličje: izbira ocene z zvezdicami na strani recepta ter prikaz povprečja in števila ocen na seznamu in pri receptu.
 
