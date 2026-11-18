@@ -1,6 +1,4 @@
 # Moja kuharica
-
-Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. 
 Avtorji: Ivan Todić, Branka Jelača, Janja Đokić
 
 Fakulteta: Fakulteta za elektrotehniko, računalništvo in informatiko (FERI), Univerza v Mariboru
