@@ -3,6 +3,7 @@ import "./App.css";
 import { API, FAVORITES_API, apiFetch } from "./api";
 import { useAuth } from "./AuthContext";
 import AuthPanel from "./AuthPanel";
+import RecipeComments from "./RecipeComments";
 import RecipeRating, { RatingSummary } from "./RecipeRating";
 
 const PAGE_SIZE = 5;
@@ -495,6 +496,10 @@ export default function App() { //nova stanja
                             recipe={detail}
                             user={user}
                             onRated={handleRated}
+                          />
+                          <RecipeComments
+                            key={`comments:${detail.id}:${user?.id ?? "guest"}`}
+                            recipeId={detail.id}
                           />
                         </>
                       )}

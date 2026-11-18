@@ -104,6 +104,16 @@ button:focus-visible { outline: 2px solid var(--basil); outline-offset: 2px; }
 .rating-stars input:focus-visible + span { outline: 2px solid var(--basil); outline-offset: 1px; border-radius: 4px; }
 .rating-hint { margin: 0; color: var(--muted); font-size: 0.9rem; }
 
+/* ---------- komentarji ---------- */
+.recipe-comments { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+.recipe-comments h4 { margin: 0 0 12px; }
+.comment-list { list-style: none; margin: 16px 0 0; padding: 0; }
+.comment-list li { padding: 12px 0; border-top: 1px solid var(--line); }
+.comment-list p { margin: 6px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.comment-meta { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.comment-meta strong { overflow-wrap: anywhere; }
+.comment-meta time, .comment-hint { color: var(--muted); font-size: 0.9rem; }
+
 .empty { padding: 32px 0; color: var(--muted); }
 
 /* ---------- iskanje, razvrščanje, strani ---------- */
