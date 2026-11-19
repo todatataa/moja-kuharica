@@ -158,13 +158,8 @@ Kot **prijavljen uporabnik** želim **dodajati recepte med svoje priljubljene in
 - **When:** Odprem razdelek »Moji priljubljeni recepti«.
 - **Then:** Prikažeta se oba shranjena recepta, recepti drugih uporabnikov, ki jih nisem shranil, pa niso prikazani.
 
-**AC-4: Preprečevanje podvojenih zapisov**
 
-- **Given:** Sem prijavljen in sem določen recept že dodal med priljubljene.
-- **When:** Ponovno poskusim dodati isti recept med priljubljene.
-- **Then:** Recept je na mojem seznamu prikazan samo enkrat.
-
-**AC-5: Neprijavljen uporabnik**
+**AC-4: Neprijavljen uporabnik**
 
 - **Given:** Nisem prijavljen v aplikacijo.
 - **When:** Poskusim dodati recept med priljubljene.
