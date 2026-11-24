@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1580" height="1260" viewBox="0 0 1580 1260">
+<title>Moja kuharica – razredni diagram</title>
+<desc>Domenski razredi, načrtovane operacije, asociacije, kompozicije in odvisnosti.</desc>
+<rect width="1580" height="1260" fill="#ffffff"/>
+<g font-family="Arial, Helvetica, sans-serif" fill="#182433">
+<polyline points="200,790 200,510 1360,510 1360,710" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="200.0" y="751" width="40" height="21" fill="white"/>
+<text x="220" y="768" font-size="14" text-anchor="middle">0..1</text>
+<rect x="1366.0" y="673" width="40" height="21" fill="white"/>
+<text x="1386" y="690" font-size="14" text-anchor="middle">0..*</text>
+<rect x="744.0" y="487" width="72" height="21" fill="white"/>
+<text x="780" y="504" font-size="14" text-anchor="middle">objavlja</text>
+<polyline points="380,820 580,620" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="380.0" y="785" width="30" height="21" fill="white"/>
+<text x="395" y="802" font-size="14" text-anchor="middle">1</text>
+<rect x="530.0" y="603" width="40" height="21" fill="white"/>
+<text x="550" y="620" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="380,870 580,865" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="385.0" y="842" width="30" height="21" fill="white"/>
+<text x="400" y="859" font-size="14" text-anchor="middle">1</text>
+<rect x="528.0" y="838" width="40" height="21" fill="white"/>
+<text x="548" y="855" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="380,925 580,1090" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="381.0" y="930" width="30" height="21" fill="white"/>
+<text x="396" y="947" font-size="14" text-anchor="middle">1</text>
+<rect x="530.0" y="1079" width="40" height="21" fill="white"/>
+<text x="550" y="1096" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="1175,755 1000,620" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<polygon points="1175,755 1169.163433658989,742.9196650151173 1155.9972258664766,740.3407170969963 1161.8337922074875,752.421052081879" fill="#31465b"/>
+<rect x="1127.0" y="727" width="30" height="21" fill="white"/>
+<text x="1142" y="744" font-size="14" text-anchor="middle">1</text>
+<rect x="1010.0" y="600" width="40" height="21" fill="white"/>
+<text x="1030" y="617" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="1175,870 1000,865" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<polygon points="1175,870 1163.1762536058648,863.6597301944493 1151.0097899249433,869.314565426427 1162.8335363190783,875.6548352319777" fill="#31465b"/>
+<rect x="1125.0" y="837" width="30" height="21" fill="white"/>
+<text x="1140" y="854" font-size="14" text-anchor="middle">1</text>
+<rect x="1012.0" y="837" width="40" height="21" fill="white"/>
+<text x="1032" y="854" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="1175,1000 1000,1090" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="1128.0" y="1016" width="30" height="21" fill="white"/>
+<text x="1143" y="1033" font-size="14" text-anchor="middle">1</text>
+<rect x="1014.0" y="1087" width="40" height="21" fill="white"/>
+<text x="1034" y="1104" font-size="14" text-anchor="middle">0..*</text>
+<polyline points="585,170 465,170" fill="none" stroke="#31465b" stroke-width="1.5" stroke-dasharray="7 5"/>
+<path d="M477.0 175.0 L465 170 L477.0 165.0" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="485.0" y="141" width="80" height="21" fill="white"/>
+<text x="525" y="158" font-size="14" text-anchor="middle">uporablja</text>
+<polyline points="1515,451 1515,710" fill="none" stroke="#31465b" stroke-width="1.5" stroke-dasharray="7 5"/>
+<path d="M1520.0 698.0 L1515 710 L1510.0 698.0" fill="none" stroke="#31465b" stroke-width="1.5"/>
+<rect x="1438.0" y="533" width="72" height="21" fill="white"/>
+<text x="1474" y="550" font-size="14" text-anchor="middle">upravlja</text>
+<rect x="35" y="790" width="345" height="196" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="35" y="790" width="345" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="207.5" y="812" font-size="17" text-anchor="middle" font-weight="bold">Uporabnik</text>
+<path d="M35 914h345" stroke="#31465b"/>
+<text x="45" y="842" font-size="15" >- id: Long</text>
+<text x="45" y="862" font-size="15" >- uporabniskoIme: String</text>
+<text x="45" y="882" font-size="15" >- ePosta: String</text>
+<text x="45" y="902" font-size="15" >- hashGesla: String</text>
+<text x="45" y="934" font-size="15" >+ getId(): Long</text>
+<text x="45" y="954" font-size="15" >+ getUporabniskoIme(): String</text>
+<text x="45" y="974" font-size="15" >+ getEPosta(): String</text>
+<rect x="1175" y="710" width="370" height="316" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="1175" y="710" width="370" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="1360.0" y="732" font-size="17" text-anchor="middle" font-weight="bold">Recept</text>
+<path d="M1175 954h370" stroke="#31465b"/>
+<text x="1185" y="762" font-size="15" >- id: Long</text>
+<text x="1185" y="782" font-size="15" >- naslov: String</text>
+<text x="1185" y="802" font-size="15" >- opis: String</text>
+<text x="1185" y="822" font-size="15" >- sestavine: String</text>
+<text x="1185" y="842" font-size="15" >- navodila: String</text>
+<text x="1185" y="862" font-size="15" >- casPripraveMin: int</text>
+<text x="1185" y="882" font-size="15" >- avtorId: Long [0..1]</text>
+<text x="1185" y="902" font-size="15" >- /povprecnaOcena: BigDecimal</text>
+<text x="1185" y="922" font-size="15" >- /steviloOcen: long</text>
+<text x="1185" y="942" font-size="15" >- /steviloVseckov: long {načrt}</text>
+<text x="1185" y="974" font-size="15" >+ setSestavine(sestavine: String): void</text>
+<text x="1185" y="994" font-size="15" >+ getPovprecnaOcena(): BigDecimal</text>
+<text x="1185" y="1014" font-size="15" >+ getSteviloOcen(): long</text>
+<rect x="580" y="550" width="420" height="216" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="580" y="550" width="420" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="790.0" y="572" font-size="17" text-anchor="middle" font-weight="bold">Komentar</text>
+<path d="M580 694h420" stroke="#31465b"/>
+<text x="590" y="602" font-size="15" >- id: Long</text>
+<text x="590" y="622" font-size="15" >- besedilo: String</text>
+<text x="590" y="642" font-size="15" >- casObjave: Instant</text>
+<text x="590" y="662" font-size="15" >- avtor: Uporabnik</text>
+<text x="590" y="682" font-size="15" >- recept: Recept</text>
+<text x="590" y="714" font-size="15" >+ getBesedilo(): String</text>
+<text x="590" y="734" font-size="15" >+ getCasObjave(): Instant</text>
+<text x="590" y="754" font-size="15" >+ getAvtor(): Uporabnik</text>
+<rect x="580" y="795" width="420" height="156" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="580" y="795" width="420" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="790.0" y="817" font-size="17" text-anchor="middle" font-weight="bold">Ocena</text>
+<path d="M580 919h420" stroke="#31465b"/>
+<text x="590" y="847" font-size="15" >- id: Long</text>
+<text x="590" y="867" font-size="15" >- vrednost: int {1..5}</text>
+<text x="590" y="887" font-size="15" >- uporabnik: Uporabnik</text>
+<text x="590" y="907" font-size="15" >- recept: Recept</text>
+<text x="590" y="939" font-size="15" >+ veljavnaVrednost(): Boolean {model}</text>
+<rect x="580" y="1020" width="420" height="156" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="580" y="1020" width="420" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="790.0" y="1042" font-size="17" text-anchor="middle" font-weight="bold">PriljubljeniRecept</text>
+<path d="M580 1124h420" stroke="#31465b"/>
+<text x="590" y="1072" font-size="15" >- id: Long</text>
+<text x="590" y="1092" font-size="15" >- uporabnik: Uporabnik</text>
+<text x="590" y="1112" font-size="15" >- recept: Recept</text>
+<text x="590" y="1144" font-size="15" >+ getUporabnik(): Uporabnik</text>
+<text x="590" y="1164" font-size="15" >+ getRecept(): Recept</text>
+<rect x="35" y="100" width="430" height="196" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="35" y="100" width="430" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="250.0" y="122" font-size="17" text-anchor="middle" font-weight="bold">KriterijiIskanja</text>
+<path d="M35 264h430" stroke="#31465b"/>
+<text x="45" y="152" font-size="15" >- iskalniNiz: String</text>
+<text x="45" y="172" font-size="15" >- najdaljsiCasPripraveMin: Integer [0..1] {načrt}</text>
+<text x="45" y="192" font-size="15" >- stran: int</text>
+<text x="45" y="212" font-size="15" >- velikostStrani: int</text>
+<text x="45" y="232" font-size="15" >- razvrstiPo: String</text>
+<text x="45" y="252" font-size="15" >- smer: String</text>
+<text x="45" y="284" font-size="15" >+ ustreza(recept: Recept): Boolean {model}</text>
+<rect x="585" y="35" width="960" height="416" fill="white" stroke="#31465b" stroke-width="1.5"/>
+<rect x="585" y="35" width="960" height="32" fill="#e9f2fb" stroke="#31465b" stroke-width="1.5"/>
+<text x="1065.0" y="57" font-size="17" text-anchor="middle" font-weight="bold">UpravljanjeReceptov</text>
+<path d="M585 159h960" stroke="#31465b"/>
+<text x="595" y="87" font-size="15" >- recepti: RecipeRepository</text>
+<text x="595" y="107" font-size="15" >- ocene: RatingRepository</text>
+<text x="595" y="127" font-size="15" >- komentarji: CommentService</text>
+<text x="595" y="147" font-size="15" >- priljubljeni: FavoriteRecipeService</text>
+<text x="595" y="179" font-size="15" >+ objaviRecept(recept: Recept, avtor: Uporabnik): Recept</text>
+<text x="595" y="199" font-size="15" >+ pridobiRecept(id: Long): Recept</text>
+<text x="595" y="219" font-size="15" >+ poisciRecepte(kriteriji: KriterijiIskanja): PagedResponse&lt;Recept&gt;</text>
+<text x="595" y="239" font-size="15" >+ mojiRecepti(uporabnik: Uporabnik): List&lt;Recept&gt; {načrt}</text>
+<text x="595" y="259" font-size="15" >+ urediRecept(id: Long, podatki: Recept, avtor: Uporabnik): Recept</text>
+<text x="595" y="279" font-size="15" >+ izbrisiRecept(id: Long, avtor: Uporabnik): void</text>
+<text x="595" y="299" font-size="15" >+ preveriSestavine(sestavine: String): Boolean {načrt}</text>
+<text x="595" y="319" font-size="15" >+ dodajOceno(id: Long, uporabnik: Uporabnik, vrednost: int): Recept</text>
+<text x="595" y="339" font-size="15" >+ dodajKomentar(id: Long, avtor: Uporabnik, besedilo: String): Komentar</text>
+<text x="595" y="359" font-size="15" >+ pridobiKomentarje(id: Long): List&lt;Komentar&gt;</text>
+<text x="595" y="379" font-size="15" >+ izbrisiKomentar(id: Long, avtor: Uporabnik): void {načrt}</text>
+<text x="595" y="399" font-size="15" >+ dodajPriljubljeni(id: Long, uporabnik: Uporabnik): void</text>
+<text x="595" y="419" font-size="15" >+ odstraniPriljubljeni(id: Long, uporabnik: Uporabnik): void</text>
+<text x="595" y="439" font-size="15" >+ mojiPriljubljeni(uporabnik: Uporabnik): List&lt;Recept&gt;</text>
+<text x="35" y="1215" font-size="15" >Polna črta = asociacija  •  poln romb = kompozicija  •  črtkana puščica = odvisnost</text>
+<text x="35" y="1240" font-size="15" >{model} = konceptualna operacija  •  {načrt} = načrtovana funkcionalnost  •  / = izpeljan atribut</text>
+</g></svg>
