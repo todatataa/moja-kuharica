@@ -374,11 +374,11 @@ V spodnji tabeli so predstavljeni pomembni domenski izrazi, ki se uporabljajo v 
 | Razvrščanje receptov | Urejanje seznama receptov po izbranem vrstnem redu, na primer po naslovu ali času priprave. |
 | RIS | Razvoj informacijskih sistemov, predmet, v okviru katerega nastaja projekt Moja kuharica. |
 
-11. Razredni diagram
+## 11. Razredni diagram
 Razredni diagram aplikacije Moja kuharica prikazuje domenski model in glavne operacije za vse primere uporabe iz DPU, vključno z načrtovanimi funkcionalnostmi. Imena domenskih razredov so zapisana v slovenščini zaradi skladnosti z DPU; v zaledju so poimenovana v angleščini.
  
 [Uredljiva izvorna datoteka (Draw.io)](docs/moja-kuharica_razredni-diagram.drawio)
-11.1 Vloga razredov in ključne metode
+### 11.1 Vloga razredov in ključne metode
 Razred	Vloga in ključne metode
 Uporabnik (AppUser)	Predstavlja registriranega uporabnika z enoličnim uporabniškim imenom, e-pošto in zgoščeno vrednostjo gesla. Metode za pridobivanje identifikatorja in uporabniškega imena omogočajo določitev avtorja recepta, komentarja ali ocene.
 Recept (Recipe)	Hrani naslov, opis, sestavine, navodila, čas priprave in identifikator avtorja. setSestavine() nastavi sestavine; getPovprecnaOcena() in getSteviloOcen() vrneta izpeljana podatka o ocenah. Število všečkov je načrtovan izpeljani podatek.
@@ -389,7 +389,7 @@ KriterijiIskanja	Predstavlja kriterije za iskanje po naslovu oziroma sestavinah,
 UpravljanjeReceptov	Logični storitveni razred, ki združuje glavne operacije aplikacije. V obstoječi implementaciji so te operacije razdeljene med RecipeController, CommentService in FavoriteRecipeService, zato ta razred ni samostojna Java datoteka.
 
 
-11.2 Ključne operacije glede na DPU
+### 11.2 Ključne operacije glede na DPU
 Primer uporabe	Operacije razreda UpravljanjeReceptov
 Ogled receptov	pridobiRecept(), poisciRecepte()
 Iskanje in filtriranje receptov	poisciRecepte(kriteriji)
