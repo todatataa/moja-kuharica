@@ -17,6 +17,7 @@ Spletna aplikacija za shranjevanje, iskanje in urejanje kuharskih receptov. Nast
 8. [DPU](#8DPU)
 9. [Vizija projekta](#-vizija-projekta)
 10. [Besednjak](#-besednjak)
+11. [Razredni diagram](#-razredni-diagram)
 
 ## 1. O projektu
 
@@ -372,6 +373,41 @@ V spodnji tabeli so predstavljeni pomembni domenski izrazi, ki se uporabljajo v 
 | Filtriranje receptov | Omejevanje prikazanih receptov glede na izbrane kriterije. |
 | Razvrščanje receptov | Urejanje seznama receptov po izbranem vrstnem redu, na primer po naslovu ali času priprave. |
 | RIS | Razvoj informacijskih sistemov, predmet, v okviru katerega nastaja projekt Moja kuharica. |
+
+11. Razredni diagram
+Razredni diagram aplikacije Moja kuharica prikazuje domenski model in glavne operacije za vse primere uporabe iz DPU, vključno z načrtovanimi funkcionalnostmi. Imena domenskih razredov so zapisana v slovenščini zaradi skladnosti z DPU; v zaledju so poimenovana v angleščini.
+ 
+[Uredljiva izvorna datoteka (Draw.io)](docs/moja-kuharica_razredni-diagram.drawio)
+11.1 Vloga razredov in ključne metode
+Razred	Vloga in ključne metode
+Uporabnik (AppUser)	Predstavlja registriranega uporabnika z enoličnim uporabniškim imenom, e-pošto in zgoščeno vrednostjo gesla. Metode za pridobivanje identifikatorja in uporabniškega imena omogočajo določitev avtorja recepta, komentarja ali ocene.
+Recept (Recipe)	Hrani naslov, opis, sestavine, navodila, čas priprave in identifikator avtorja. setSestavine() nastavi sestavine; getPovprecnaOcena() in getSteviloOcen() vrneta izpeljana podatka o ocenah. Število všečkov je načrtovan izpeljani podatek.
+Komentar (Comment)	Predstavlja besedilo komentarja, čas objave, recept in avtorja. Metode getBesedilo(), getCasObjave() in getAvtor() omogočajo prikaz komentarjev.
+Ocena (Rating)	Povezuje uporabnika in recept z vrednostjo od 1 do 5. Konceptualna metoda veljavnaVrednost() predstavlja preverjanje dovoljenega razpona, ki ga v dejanski implementaciji izvaja RecipeController.rate() in omejitev v bazi.
+PriljubljeniRecept (FavoriteRecipe)	Povezuje uporabnika z receptom, ki ga je všečkal oziroma shranil med priljubljene. getUporabnik() in getRecept() vrneta povezana objekta.
+KriterijiIskanja	Predstavlja kriterije za iskanje po naslovu oziroma sestavinah, paginacijo, razvrščanje in načrtovano filtriranje po največjem času priprave. Konceptualna metoda ustreza(recept) preveri ujemanje recepta s kriteriji. Trenutno se parametri iskanja in razvrščanja posredujejo neposredno v RecipeController.getAll().
+UpravljanjeReceptov	Logični storitveni razred, ki združuje glavne operacije aplikacije. V obstoječi implementaciji so te operacije razdeljene med RecipeController, CommentService in FavoriteRecipeService, zato ta razred ni samostojna Java datoteka.
+
+
+11.2 Ključne operacije glede na DPU
+Primer uporabe	Operacije razreda UpravljanjeReceptov
+Ogled receptov	pridobiRecept(), poisciRecepte()
+Iskanje in filtriranje receptov	poisciRecepte(kriteriji)
+Objavljanje receptov in vnos sestavin	objaviRecept(), preveriSestavine()
+Ogled in urejanje svojih receptov	mojiRecepti(), urediRecept()
+Ocenjevanje receptov	dodajOceno()
+Komentiranje receptov	dodajKomentar(), pridobiKomentarje()
+Všečkanje receptov	dodajPriljubljeni(), odstraniPriljubljeni(), mojiPriljubljeni()
+
+
+Operacija dodajanja komentarja preveri, da besedilo ni prazno ali sestavljeno samo iz presledkov in ne presega 500 znakov. Komentarji se vračajo od najnovejšega do najstarejšega. Pri ocenjevanju se preverita vrednost od 1 do 5 in enoličnost para uporabnik–recept; uporabnik ne more oceniti lastnega recepta. Enoličnost istega para velja tudi pri priljubljenih receptih.
+11.3 Povezave med razredi
+- Asociacija Uporabnik–Recept: uporabnik lahko objavi nič ali več receptov; nov recept ima enega avtorja. Kardinalnost 0..1 na strani uporabnika upošteva stare recepte brez shranjenega identifikatorja avtorja.
+- Asociacije Uporabnik–Komentar/Ocena/PriljubljeniRecept: posamezni zapis pripada enemu uporabniku, uporabnik pa ima lahko nič ali več zapisov.
+- Kompoziciji Recept–Komentar in Recept–Ocena: en recept ima nič ali več komentarjev oziroma ocen. Zapisi pripadajo natanko enemu receptu in se ob njegovem brisanju izbrišejo; polni romb je na strani recepta.
+- Asociacija Recept–PriljubljeniRecept: en recept je lahko shranjen med priljubljenimi pri več uporabnikih. Odstranitev priljubljenega zapisa ne izbriše recepta.
+- Odvisnosti: črtkani puščici iz razreda UpravljanjeReceptov kažeta uporabo razredov Recept in KriterijiIskanja.
+Gost je akter iz DPU, ne samostojen shranjen domenski objekt; zato ga v razrednem diagramu ne modeliramo z dedovanjem. Operacije, označene z {načrt}, prikazujejo predvidene funkcionalnosti (npr. ogled lastnih receptov, časovni filter, obvezno preverjanje sestavin in brisanje lastnega komentarja); {model} označuje konceptualno operacijo. Starejši podrobni opis PU-03 predvideva spreminjanje oziroma umik ocene, medtem ko aktualna zgodba US-1 in implementacija dovoljujeta samo eno nespremenljivo oceno na uporabnika in recept. Diagram sledi aktualni zgodbi US-1; to razliko je treba uskladiti v projektni dokumentaciji.
 
 
 
